@@ -1,16 +1,18 @@
 opencv-python==4.7.0.68
-matplotlib
+torch==1.13.1
+torchvision==0.14.1
 pandas==1.5.3
 numpy==1.24.1
+nltk==3.8.1
+
 pillow
 scipy
-nltk==3.8.1
 tqdm
 scikit-learn
 scikit-image
 seaborn
-torch==1.13.1
-torchvision==0.14.1
+matplotlib
+
 
 # pycocotools might need python3.XX-dev to be installed
 pycocotools==2.0.6

@@ -4,16 +4,18 @@ import os.path
 from pycocotools.coco import COCO
 from collections import Counter
 
+
 class Vocabulary(object):
 
-    def __init__(self,
-        vocab_threshold,
-        vocab_file='./vocab.pkl',
-        start_word="<start>",
-        end_word="<end>",
-        unk_word="<unk>",
-        annotations_file='/home/snow/Documents/Datasets/cocoapi/annotations/captions_train2014.json',
-        vocab_from_file=False):
+    def __init__(
+            self,
+            vocab_threshold,
+            vocab_file,
+            start_word,
+            end_word,
+            unk_word,
+            annotations_file,
+            vocab_from_file):
         """Initialize the vocabulary.
         Args:
           vocab_threshold: Minimum word count threshold.
@@ -23,7 +25,7 @@ class Vocabulary(object):
           unk_word: Special word denoting unknown words.
           annotations_file: Path for train annotation file.
           vocab_from_file: If False, create vocab from scratch & override any existing vocab_file
-                           If True, load vocab from from existing vocab_file, if it exists
+                           If True, load vocab from existing vocab_file, if it exists
         """
         self.vocab_threshold = vocab_threshold
         self.vocab_file = vocab_file
@@ -87,7 +89,7 @@ class Vocabulary(object):
             self.add_word(word)
 
     def __call__(self, word):
-        if not word in self.word2idx:
+        if word not in self.word2idx:
             return self.word2idx[self.unk_word]
         return self.word2idx[word]
 

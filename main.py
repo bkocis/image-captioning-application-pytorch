@@ -83,7 +83,7 @@ def experiment_with_cnn():
     print('type(features):', type(features))
     print('features.shape:', features.shape)
 
-    # Check that your encoder satisfies some requirements of the project! :D
+    # Check that your encoder satisfies some requirements of the project!
     assert type(features) == torch.Tensor, "Encoder output needs to be a PyTorch Tensor."
     assert (features.shape[0] == batch_size) & (
                 features.shape[1] == embed_size), "The shape of the encoder output is incorrect."
@@ -91,10 +91,6 @@ def experiment_with_cnn():
 
 if __name__ == '__main__':
 
-
-    # for value, count in lengths:
-    #     print('value: %2d --- count: %5d' % (value, count))
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     coco_api_init()
-    initialize_data_loader
+    # initialize_data_loader()

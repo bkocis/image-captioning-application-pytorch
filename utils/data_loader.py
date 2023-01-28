@@ -9,6 +9,7 @@ import numpy as np
 from tqdm import tqdm
 import json
 
+
 def get_loader(transform,
                mode='train',
                batch_size=1,
@@ -20,9 +21,10 @@ def get_loader(transform,
                vocab_from_file=True,
                num_workers=0,
                cocoapi_loc='/home/snow/Documents/Datasets/',
-               dataType = '2017'):
+               data_type='2017'):
     """Returns the data loader.
     Args:
+      data_type:
       transform: Image transform.
       mode: One of 'train' or 'test'.
       batch_size: Batch size (if in testing mode, must have batch_size=1).
@@ -32,25 +34,30 @@ def get_loader(transform,
       end_word: Special word denoting sentence end.
       unk_word: Special word denoting unknown words.
       vocab_from_file: If False, create vocab from scratch & override any existing vocab_file.
-                       If True, load vocab from from existing vocab_file, if it exists.
+                       If True, load vocab from existing vocab_file, if it exists.
       num_workers: Number of subprocesses to use for data loading 
       cocoapi_loc: The location of the folder containing the COCO API: https://github.com/cocodataset/cocoapi
     """
-    
+
     assert mode in ['train', 'test'], "mode must be one of 'train' or 'test'."
-    if vocab_from_file==False: assert mode == 'train', "To generate vocab from captions file, must be in training mode (mode='train')."
+
+    if not vocab_from_file:
+        assert mode == 'train', "To generate vocab from captions file, must be in training mode (mode='train')."
 
     # Based on mode (train, val, test), obtain img_folder and annotations_file.
     if mode == 'train':
-        if vocab_from_file==True: assert os.path.exists(vocab_file), "vocab_file does not exist.  Change vocab_from_file to False to create vocab_file."
-        img_folder = os.path.join(cocoapi_loc, f'cocoapi/images/train{dataType}/')
-        annotations_file = os.path.join(cocoapi_loc, f'cocoapi/annotations/captions_train{dataType}.json')
+        if vocab_from_file:
+            assert os.path.exists(
+                vocab_file), "vocab_file does not exist.  Change vocab_from_file to False to create vocab_file."
+        img_folder = os.path.join(cocoapi_loc, f'cocoapi/images/train{data_type}/')
+        annotations_file = os.path.join(cocoapi_loc, f'cocoapi/annotations/captions_train{data_type}.json')
+
     if mode == 'test':
-        assert batch_size==1, "Please change batch_size to 1 if testing your model."
+        assert batch_size == 1, "Please change batch_size to 1 if testing your model."
         assert os.path.exists(vocab_file), "Must first generate vocab.pkl from training data."
-        assert vocab_from_file==True, "Change vocab_from_file to True."
-        img_folder = os.path.join(cocoapi_loc, f'cocoapi/images/test{dataType}/')
-        annotations_file = os.path.join(cocoapi_loc, f'cocoapi/annotations/image_info_test{dataType}.json')
+        assert vocab_from_file is True, "Change vocab_from_file to True."
+        img_folder = os.path.join(cocoapi_loc, f'cocoapi/images/test{data_type}/')
+        annotations_file = os.path.join(cocoapi_loc, f'cocoapi/annotations/image_info_test{data_type}.json')
 
     # COCO caption dataset.
     dataset = CoCoDataset(transform=transform,
@@ -71,7 +78,7 @@ def get_loader(transform,
         # Create and assign a batch sampler to retrieve a batch with the sampled indices.
         initial_sampler = data.sampler.SubsetRandomSampler(indices=indices)
         # data loader for COCO dataset.
-        data_loader = data.DataLoader(dataset=dataset, 
+        data_loader = data.DataLoader(dataset=dataset,
                                       num_workers=num_workers,
                                       batch_sampler=data.sampler.BatchSampler(sampler=initial_sampler,
                                                                               batch_size=dataset.batch_size,
@@ -86,8 +93,8 @@ def get_loader(transform,
 
 
 class CoCoDataset(data.Dataset):
-    
-    def __init__(self, transform, mode, batch_size, vocab_threshold, vocab_file, start_word, 
+
+    def __init__(self, transform, mode, batch_size, vocab_threshold, vocab_file, start_word,
                  end_word, unk_word, annotations_file, vocab_from_file, img_folder):
         self.transform = transform
         self.mode = mode
@@ -99,12 +106,13 @@ class CoCoDataset(data.Dataset):
             self.coco = COCO(annotations_file)
             self.ids = list(self.coco.anns.keys())
             print('Obtaining caption lengths...')
-            all_tokens = [nltk.tokenize.word_tokenize(str(self.coco.anns[self.ids[index]]['caption']).lower()) for index in tqdm(np.arange(len(self.ids)))]
+            all_tokens = [nltk.tokenize.word_tokenize(str(self.coco.anns[self.ids[index]]['caption']).lower()) for index
+                          in tqdm(np.arange(len(self.ids)))]
             self.caption_lengths = [len(token) for token in all_tokens]
         else:
             test_info = json.loads(open(annotations_file).read())
             self.paths = [item['file_name'] for item in test_info['images']]
-        
+
     def __getitem__(self, index):
         # obtain image and caption if in training mode
         if self.mode == 'train':
@@ -124,7 +132,6 @@ class CoCoDataset(data.Dataset):
             caption.append(self.vocab(self.vocab.end_word))
             caption = torch.Tensor(caption).long()
 
-            # return pre-processed image and caption tensors
             return image, caption
 
         # obtain image if in test mode
