@@ -20,7 +20,8 @@ def get_loader(transform,
                unk_word="<unk>",
                vocab_from_file=True,
                num_workers=0,
-               cocoapi_loc='/opt'):
+               cocoapi_loc='/home/snow/Documents/Datasets/',
+               dataType = '2017'):
     """Returns the data loader.
     Args:
       transform: Image transform.
@@ -38,19 +39,19 @@ def get_loader(transform,
     """
     
     assert mode in ['train', 'test'], "mode must be one of 'train' or 'test'."
-    if vocab_from_file==False: assert mode=='train', "To generate vocab from captions file, must be in training mode (mode='train')."
+    if vocab_from_file==False: assert mode == 'train', "To generate vocab from captions file, must be in training mode (mode='train')."
 
     # Based on mode (train, val, test), obtain img_folder and annotations_file.
     if mode == 'train':
         if vocab_from_file==True: assert os.path.exists(vocab_file), "vocab_file does not exist.  Change vocab_from_file to False to create vocab_file."
-        img_folder = os.path.join(cocoapi_loc, 'cocoapi/images/train2014/')
-        annotations_file = os.path.join(cocoapi_loc, 'cocoapi/annotations/captions_train2014.json')
+        img_folder = os.path.join(cocoapi_loc, f'cocoapi/images/train{dataType}/')
+        annotations_file = os.path.join(cocoapi_loc, f'cocoapi/annotations/captions_train{dataType}.json')
     if mode == 'test':
         assert batch_size==1, "Please change batch_size to 1 if testing your model."
         assert os.path.exists(vocab_file), "Must first generate vocab.pkl from training data."
         assert vocab_from_file==True, "Change vocab_from_file to True."
-        img_folder = os.path.join(cocoapi_loc, 'cocoapi/images/test2014/')
-        annotations_file = os.path.join(cocoapi_loc, 'cocoapi/annotations/image_info_test2014.json')
+        img_folder = os.path.join(cocoapi_loc, f'cocoapi/images/test{dataType}/')
+        annotations_file = os.path.join(cocoapi_loc, f'cocoapi/annotations/image_info_test{dataType}.json')
 
     # COCO caption dataset.
     dataset = CoCoDataset(transform=transform,

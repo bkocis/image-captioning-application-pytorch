@@ -13,18 +13,18 @@ from pycocotools.coco import COCO
 from collections import Counter
 
 nltk.download('punkt')
-sys.path.append('/opt/cocoapi/PythonAPI')
+# sys.path.append('/opt/cocoapi/PythonAPI')
 
 
 def coco_api_init():
     # initialize COCO API for instance annotations
-    dataDir = '/opt/cocoapi'
-    dataType = 'val2014'
-    instances_annFile = os.path.join(dataDir, 'annotations/instances_{}.json'.format(dataType))
+    dataDir = '/home/snow/Documents/Datasets/cocoapi'
+    dataType = 'val2017'
+    instances_annFile = os.path.join(dataDir, f'annotations/instances_{dataType}.json')
     coco = COCO(instances_annFile)
 
     # initialize COCO API for caption annotations
-    captions_annFile = os.path.join(dataDir, 'annotations/captions_{}.json'.format(dataType))
+    captions_annFile = os.path.join(dataDir, f'annotations/captions_{dataType}.json')
     coco_caps = COCO(captions_annFile)
 
     # get image ids
@@ -99,5 +99,5 @@ if __name__ == '__main__':
     #     print('value: %2d --- count: %5d' % (value, count))
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    # coco_api_init()
+    coco_api_init()
     initialize_data_loader

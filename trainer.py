@@ -2,8 +2,12 @@ import torch
 import torch.nn as nn
 from torchvision import transforms
 import sys
-sys.path.append('/opt/cocoapi/PythonAPI')
-
+# sys.path.append('/opt/cocoapi/PythonAPI')
+import torch.utils.data as data
+import numpy as np
+import os
+import requests
+import time
 from pycocotools.coco import COCO
 from data_loader import get_loader
 from model import EncoderCNN, DecoderRNN
@@ -64,5 +68,73 @@ optimizer = torch.optim.Adam(params, lr=learning_rate)
 # Set the total number of training steps per epoch.
 total_step = math.ceil(len(data_loader.dataset.caption_lengths) / data_loader.batch_sampler.batch_size)
 #
-# import nltk
-# nltk.download('punkt')
+import nltk
+nltk.download('punkt')
+
+# encoder.load_state_dict(torch.load(os.path.join('./models', 'encoder_batch_first-1.pkl')))
+# decoder.load_state_dict(torch.load(os.path.join('./models', 'decoder_batch_first-1.pkl')))
+
+
+###
+
+
+# Open the training log file.
+f = open(log_file, 'w')
+
+
+for epoch in range(1, num_epochs+1):
+
+    for i_step in range(1, total_step+1):
+
+        # Randomly sample a caption length, and sample indices with that length.
+        indices = data_loader.dataset.get_train_indices()
+        # Create and assign a batch sampler to retrieve a batch with the sampled indices.
+        new_sampler = data.sampler.SubsetRandomSampler(indices=indices)
+        data_loader.batch_sampler.sampler = new_sampler
+
+        # Obtain the batch.
+        images, captions = next(iter(data_loader))
+
+        # Move batch of images and captions to GPU if CUDA is available.
+        images = images.to(device)
+        captions = captions.to(device)
+
+        # Zero the gradients.
+        decoder.zero_grad()
+        encoder.zero_grad()
+
+        # Pass the inputs through the CNN-RNN model.
+        features = encoder(images)
+        outputs = decoder(features, captions)
+
+        # Calculate the batch loss.
+        loss = criterion(outputs.view(-1, vocab_size), captions.view(-1))
+
+        # Backward pass.
+        loss.backward()
+
+        # Update the parameters in the optimizer.
+        optimizer.step()
+
+        # Get training statistics.
+        stats = 'Epoch [%d/%d], Step [%d/%d], Loss: %.4f, Perplexity: %5.4f' % (epoch, num_epochs, i_step, total_step, loss.item(), np.exp(loss.item()))
+
+        # Print training statistics (on same line).
+        print('\r' + stats, end="")
+        sys.stdout.flush()
+
+        # Print training statistics to file.
+        f.write(stats + '\n')
+        f.flush()
+
+        # Print training statistics (on different line).
+        if i_step % print_every == 0:
+            print('\r' + stats)
+
+    # Save the weights.
+    if epoch % save_every == 0:
+        torch.save(decoder.state_dict(), os.path.join('./models', 'decoder_n2-%d.pkl' % epoch))
+        torch.save(encoder.state_dict(), os.path.join('./models', 'encoder_n2-%d.pkl' % epoch))
+
+# Close the training log file.
+f.close()
