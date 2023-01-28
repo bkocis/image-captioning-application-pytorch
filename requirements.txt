@@ -1,0 +1,17 @@
+opencv-python
+# jupyter>=1.0.0
+matplotlib
+pandas
+numpy
+pillow
+scipy
+nltk
+tqdm
+scikit-learn
+scikit-image
+seaborn
+torch
+torchvision
+
+# need python3.XX-dev to be installed
+pycocotools
