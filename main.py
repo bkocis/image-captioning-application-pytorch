@@ -1,19 +1,16 @@
 import os
-import sys
 import nltk
 import torch
-
-import numpy as np
 import torch.utils.data as data
 
-from model import EncoderCNN, DecoderRNN
-from data_loader import get_loader
 from torchvision import transforms
 from pycocotools.coco import COCO
 from collections import Counter
 
+from utils.model import EncoderCNN
+from utils.data_loader import get_loader
+
 nltk.download('punkt')
-# sys.path.append('/opt/cocoapi/PythonAPI')
 
 
 def coco_api_init():

@@ -1,17 +1,16 @@
-opencv-python
-# jupyter>=1.0.0
+opencv-python==4.7.0.68
 matplotlib
-pandas
-numpy
+pandas==1.5.3
+numpy==1.24.1
 pillow
 scipy
-nltk
+nltk==3.8.1
 tqdm
 scikit-learn
 scikit-image
 seaborn
-torch
-torchvision
+torch==1.13.1
+torchvision==0.14.1
 
-# need python3.XX-dev to be installed
-pycocotools
+# pycocotools might need python3.XX-dev to be installed
+pycocotools==2.0.6

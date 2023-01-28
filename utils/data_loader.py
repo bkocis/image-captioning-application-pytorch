@@ -2,12 +2,11 @@ import nltk
 import os
 import torch
 import torch.utils.data as data
-from vocabulary import Vocabulary
+from utils.vocabulary import Vocabulary
 from PIL import Image
 from pycocotools.coco import COCO
 import numpy as np
 from tqdm import tqdm
-import random
 import json
 
 def get_loader(transform,
