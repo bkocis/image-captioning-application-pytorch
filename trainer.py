@@ -12,13 +12,13 @@ from utils.data_loader import get_loader
 from utils.model import EncoderCNN, DecoderRNN
 
 
-batch_size = 128          # batch size
+batch_size = 256
 vocab_threshold = 4        # minimum word count threshold
 vocab_from_file = True    # if True, load existing vocab file
 embed_size = 300           # dimensionality of image and word embeddings
 hidden_size = 300          # number of features in hidden state of the RNN decoder
 num_layers = 2
-num_epochs = 3             # number of training epochs
+num_epochs = 1
 save_every = 1             # determines frequency of saving model weights
 print_every = 100          # determines window for printing average loss
 
@@ -53,10 +53,9 @@ params = list(decoder.parameters()) + list(encoder.embed.parameters())
 optimizer = torch.optim.Adam(params, lr=learning_rate)
 total_step = math.ceil(len(data_loader.dataset.caption_lengths) / data_loader.batch_sampler.batch_size)
 
-# nltk.download('punkt')
-
-# encoder.load_state_dict(torch.load(os.path.join('./models', 'encoder_batch_first-1.pkl')))
-# decoder.load_state_dict(torch.load(os.path.join('./models', 'decoder_batch_first-1.pkl')))
+# load previous model
+encoder.load_state_dict(torch.load(os.path.join('./models', 'encoder_n2-3.pkl')))
+decoder.load_state_dict(torch.load(os.path.join('./models', 'decoder_n2-3.pkl')))
 
 
 for epoch in range(1, num_epochs+1):
@@ -98,5 +97,5 @@ for epoch in range(1, num_epochs+1):
 
     # Save the weights.
     if epoch % save_every == 0:
-        torch.save(decoder.state_dict(), os.path.join('./models', 'decoder_n2-%d.pkl' % epoch))
-        torch.save(encoder.state_dict(), os.path.join('./models', 'encoder_n2-%d.pkl' % epoch))
+        torch.save(decoder.state_dict(), os.path.join('./models', 'decoder_n3-%d.pkl' % epoch))
+        torch.save(encoder.state_dict(), os.path.join('./models', 'encoder_n3-%d.pkl' % epoch))

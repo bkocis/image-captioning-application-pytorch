@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from utils.model import EncoderCNN, DecoderRNN
 
-from pycocotools.coco import COCO
 from utils.data_loader import get_loader
 from torchvision import transforms
 
@@ -18,8 +17,6 @@ transform_test = transforms.Compose([
 
 data_loader = get_loader(transform=transform_test,
                          mode='test')
-orig_image, image = next(iter(data_loader))
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 encoder_file = "encoder_n2-3.pkl"
@@ -42,40 +39,26 @@ encoder.to(device)
 decoder.to(device)
 
 
-
-# Move image Pytorch Tensor to GPU if CUDA is available.
-image = image.to(device)
-
-# Obtain the embedded image features.
-features = encoder(image).unsqueeze(1)
-
-# Pass the embedded image features through the model to get a predicted caption.
-output = decoder.sample(features)
-print('example output:', output)
-
-
 def clean_sentence(output):
     words = [data_loader.dataset.vocab.idx2word[i] for i in output][1:-1]
     sentence = ' '.join(words)
     return sentence
 
 
-sentence = clean_sentence(output)
-print('example sentence:', sentence)
-
-
 def get_prediction():
     orig_image, image = next(iter(data_loader))
     plt.imshow(np.squeeze(orig_image))
     plt.title('Sample Image')
-    plt.show()
+    # plt.show()
     image = image.to(device)
+
+    # Obtain the embedded image features.
     features = encoder(image).unsqueeze(1)
+
+    # Pass the embedded image features through the model to get a predicted caption.
     output = decoder.sample(features)
     sentence = clean_sentence(output)
-    print(sentence)
-
-
+    plt.savefig(f"resources/Sample_image-{sentence}.png")
 
 get_prediction()
 

@@ -14,7 +14,7 @@ def get_loader(transform,
                mode='train',
                batch_size=1,
                vocab_threshold=None,
-               vocab_file='./vocab.pkl',
+               vocab_file='./models/vocab.pkl',
                start_word="<start>",
                end_word="<end>",
                unk_word="<unk>",
@@ -24,7 +24,7 @@ def get_loader(transform,
                data_type='2017'):
     """Returns the data loader.
     Args:
-      data_type:
+      data_type: the dataset year
       transform: Image transform.
       mode: One of 'train' or 'test'.
       batch_size: Batch size (if in testing mode, must have batch_size=1).
