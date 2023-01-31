@@ -1,4 +1,4 @@
-# python3.10
+### python3.10
 
 opencv-python==4.7.0.68
 torch==1.13.1
@@ -18,3 +18,8 @@ matplotlib
 
 # pycocotools might need python3.XX-dev to be installed
 pycocotools==2.0.6
+
+# application layer
+uvicorn==0.20.0
+fastapi==0.89.1
+python-multipart
