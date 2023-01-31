@@ -10,19 +10,19 @@ from torchvision import transforms
 
 class InferenceOnSingleImage:
 
-    # encoder_file = "encoder_n2-3.pkl"
-    # decoder_file = "decoder_n2-3.pkl"
-    # embed_size = 300
-    # hidden_size = 300
+    encoder_file = "encoder_n2-3.pkl"
+    decoder_file = "decoder_n2-3.pkl"
+    embed_size = 300
+    hidden_size = 300
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    def __int__(self, encoder_file, decoder_file=None, embed_size=None, hidden_size=None, device=None):
+    def __int__(self, encoder_file=None, decoder_file=None, embed_size=None, hidden_size=None, device=None):
 
-        self.encoder_file = "encoder_n2-3.pkl"
-        self.decoder_file = "decoder_n2-3.pkl"
-        self.embed_size = 300
-        self.hidden_size = 300
-
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.encoder_file = encoder_file
+        self.decoder_file = decoder_file
+        self.embed_size = embed_size
+        self.hidden_size = hidden_size
+        self.device = device
 
     # def transform_test(self):
     #     transform_test = transforms.Compose([
@@ -58,17 +58,17 @@ class InferenceOnSingleImage:
         data_loader = get_loader(transform=transform_test, mode='test')
         vocab_size = len(data_loader.dataset.vocab)
         orig_image, image = next(iter(data_loader))
-        return image, vocab_size
+        return data_loader, orig_image, image, vocab_size
 
-    def clean_sentence(self, output):
-        words = [self.data_loader.dataset.vocab.idx2word[i] for i in output][1:-1]
+    def clean_sentence(self, data_loader, output):
+        words = [data_loader.dataset.vocab.idx2word[i] for i in output][1:-1]
         sentence = ' '.join(words)
         return sentence
 
-    def get_prediction(self, image, encoder, decoder):
+    def get_prediction(self, data_loader, orig_image, image, encoder, decoder):
 
-        # plt.imshow(np.squeeze(orig_image))
-        # plt.title('Sample Image')
+        plt.imshow(np.squeeze(orig_image))
+        plt.title('Sample Image')
         # plt.show()
         image = image.to(self.device)
 
@@ -78,11 +78,11 @@ class InferenceOnSingleImage:
         # Pass the embedded image features through the model to get a predicted caption.
         output = decoder.sample(features)
 
-        sentence = self.clean_sentence(output)
+        sentence = self.clean_sentence(data_loader, output)
         plt.savefig(f"resources/Sample_image-{sentence}.png")
         return sentence
 
     def caption_sentence(self):
-        image, vocab_size = self.load_data()
+        data_loader, orig_image, image, vocab_size = self.load_data()
         encoder, decoder = self.load_enc_dec(vocab_size)
-        self.get_prediction(image, encoder, decoder)
+        self.get_prediction(data_loader, orig_image, image, encoder, decoder)
