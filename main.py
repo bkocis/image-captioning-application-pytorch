@@ -1,7 +1,7 @@
 import os
 import uvicorn
 import logging
-
+from PIL import Image
 from fastapi import FastAPI, File, UploadFile
 
 from inference import InferenceOnSingleImage
@@ -26,16 +26,18 @@ async def image_file(image_file: UploadFile = File(...)):
         f.write(image_file.file.read())
 
     # result = ...
+    image = Image.open(os.path.join(file_path)).convert('RGB')
+    orig_image, sentence = get_caption.caption_sentence_from_upload(image)
 
     output = {
         "filename": image_file.filename,
-        # "predicted_caption": result
+        "predicted_caption": sentence
     }
 
     logging.info(f"Prediction for {image_file} ...done!")
     return output
 
 if __name__ == "__main__":
-    get_caption = InferenceOnSingleImage().caption_sentence()
+    get_caption = InferenceOnSingleImage()  # .caption_sentence()
     logging.info("The service is starting...")
     uvicorn.run(app, host="0.0.0.0", port=8080)
