@@ -25,7 +25,6 @@ async def image_file(image_file: UploadFile = File(...)):
     with open(file_path, 'wb+') as f:
         f.write(image_file.file.read())
 
-    # result = ...
     image = Image.open(os.path.join(file_path)).convert('RGB')
     orig_image, sentence = get_caption.caption_sentence_from_upload(image)
 
@@ -38,6 +37,6 @@ async def image_file(image_file: UploadFile = File(...)):
     return output
 
 if __name__ == "__main__":
-    get_caption = InferenceOnSingleImage()  # .caption_sentence()
+    get_caption = InferenceOnSingleImage()
     logging.info("The service is starting...")
     uvicorn.run(app, host="0.0.0.0", port=8080)
