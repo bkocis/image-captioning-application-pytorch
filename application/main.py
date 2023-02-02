@@ -15,7 +15,7 @@ app = FastAPI(docs_url="/")
 async def image_file(image_file: UploadFile = File(...)):
     logging.info(image_file.file)
     try:
-        os.mkdir("resources/image_file")
+        os.mkdir("../resources/image_file")
 
         logging.info(os.getcwd())
     except Exception as e:
@@ -39,4 +39,4 @@ async def image_file(image_file: UploadFile = File(...)):
 if __name__ == "__main__":
     get_caption = InferenceOnSingleImage()
     logging.info("The service is starting...")
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8081)

@@ -1,4 +1,4 @@
-/__pycache__/**
+/application/__pycache__/**
 /utils/__pycache__/**
 .idea/**
 /models/**

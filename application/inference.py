@@ -30,8 +30,8 @@ class InferenceOnSingleImage:
         decoder = DecoderRNN(self.embed_size, self.hidden_size, vocab_size)
         decoder.eval()
 
-        encoder.load_state_dict(torch.load(os.path.join('./models', self.encoder_file)))
-        decoder.load_state_dict(torch.load(os.path.join('./models', self.decoder_file)))
+        encoder.load_state_dict(torch.load(os.path.join('models', self.encoder_file)))
+        decoder.load_state_dict(torch.load(os.path.join('models', self.decoder_file)))
 
         encoder.to(self.device)
         decoder.to(self.device)

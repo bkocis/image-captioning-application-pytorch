@@ -54,8 +54,8 @@ optimizer = torch.optim.Adam(params, lr=learning_rate)
 total_step = math.ceil(len(data_loader.dataset.caption_lengths) / data_loader.batch_sampler.batch_size)
 
 # load previous model
-encoder.load_state_dict(torch.load(os.path.join('./models', 'encoder_n2-3.pkl')))
-decoder.load_state_dict(torch.load(os.path.join('./models', 'decoder_n2-3.pkl')))
+encoder.load_state_dict(torch.load(os.path.join('../models', 'encoder_n2-3.pkl')))
+decoder.load_state_dict(torch.load(os.path.join('../models', 'decoder_n2-3.pkl')))
 
 
 for epoch in range(1, num_epochs+1):
@@ -97,5 +97,5 @@ for epoch in range(1, num_epochs+1):
 
     # Save the weights.
     if epoch % save_every == 0:
-        torch.save(decoder.state_dict(), os.path.join('./models', 'decoder_n3-%d.pkl' % epoch))
-        torch.save(encoder.state_dict(), os.path.join('./models', 'encoder_n3-%d.pkl' % epoch))
+        torch.save(decoder.state_dict(), os.path.join('../models', 'decoder_n3-%d.pkl' % epoch))
+        torch.save(encoder.state_dict(), os.path.join('../models', 'encoder_n3-%d.pkl' % epoch))
