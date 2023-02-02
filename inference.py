@@ -2,10 +2,10 @@ import os
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from utils.model import EncoderCNN, DecoderRNN
-
-from utils.data_loader import get_loader
 from torchvision import transforms
+
+from utils.model import EncoderCNN, DecoderRNN
+from utils.data_loader import get_loader
 
 
 class InferenceOnSingleImage:
@@ -23,16 +23,6 @@ class InferenceOnSingleImage:
         self.embed_size = embed_size
         self.hidden_size = hidden_size
         self.device = device
-
-    # def transform_test(self):
-    #     transform_test = transforms.Compose([
-    #                                 transforms.Resize(256),                          # smaller edge of image resized to 256
-    #                                 transforms.RandomCrop(224),                      # get 224x224 crop from random location
-    #                                 transforms.RandomHorizontalFlip(),               # horizontally flip image with probability=0.5
-    #                                 transforms.ToTensor(),                           # convert the PIL Image to a tensor
-    #                                 transforms.Normalize((0.485, 0.456, 0.406),      # normalize image for pre-trained model
-    #                                                      (0.229, 0.224, 0.225))])
-    #     return transform_test
 
     def load_enc_dec(self, vocab_size):
         encoder = EncoderCNN(self.embed_size)
@@ -66,23 +56,35 @@ class InferenceOnSingleImage:
         return sentence
 
     def get_prediction(self, data_loader, orig_image, image, encoder, decoder):
-
-        plt.imshow(np.squeeze(orig_image))
-        plt.title('Sample Image')
-        # plt.show()
         image = image.to(self.device)
-
         # Obtain the embedded image features.
         features = encoder(image).unsqueeze(1)
-
         # Pass the embedded image features through the model to get a predicted caption.
         output = decoder.sample(features)
 
         sentence = self.clean_sentence(data_loader, output)
+
+        plt.imshow(np.squeeze(orig_image))
+        plt.title(f'{sentence}')
         plt.savefig(f"resources/Sample_image-{sentence}.png")
         return sentence
 
-    def caption_sentence(self):
-        data_loader, orig_image, image, vocab_size = self.load_data()
+    def caption_sentence_from_upload(self, image_file):
+        # PIL_image = Image.open(image_file).convert('RGB')
+        orig_image = np.array(image_file)
+        image = self.transform_image(image_file)
+        image = image[None, :, :, :]
+        data_loader, _, _, vocab_size = self.load_data()
         encoder, decoder = self.load_enc_dec(vocab_size)
-        self.get_prediction(data_loader, orig_image, image, encoder, decoder)
+        sentence = self.get_prediction(data_loader, orig_image, image, encoder, decoder)
+        return orig_image, sentence
+
+    def transform_image(self, image):
+        transform_img = transforms.Compose([
+                                    transforms.Resize(256),                          # smaller edge of image resized to 256
+                                    transforms.RandomCrop(224),                      # get 224x224 crop from random location
+                                    transforms.RandomHorizontalFlip(),               # horizontally flip image with probability=0.5
+                                    transforms.ToTensor(),                           # convert the PIL Image to a tensor
+                                    transforms.Normalize((0.485, 0.456, 0.406),      # normalize image for pre-trained model
+                                                         (0.229, 0.224, 0.225))])
+        return transform_img(image)
