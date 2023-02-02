@@ -11,10 +11,11 @@ RUN mkdir -p /opt/resources/
 WORKDIR /opt
 
 RUN apt-get update
+RUN apt-get install python3-dev -y
 
 RUN pip install --upgrade pip && \
     pip install setuptools wheel && \
-    pip install -r /opt/requirements.txt
+    pip install -r /opt/requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
 
 ENV PYTHONPATH /opt
 
