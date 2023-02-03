@@ -15,13 +15,13 @@ app = FastAPI(docs_url="/")
 async def image_file(image_file: UploadFile = File(...)):
     logging.info(image_file.file)
     try:
-        os.mkdir("../resources/image_file")
+        os.mkdir("./resources/image_file")
 
         logging.info(os.getcwd())
     except Exception as e:
         logging.info(e)
 
-    file_path = os.path.join(os.getcwd(), "resources/image_file", image_file.filename.replace(" ", "-"))
+    file_path = os.path.join(os.getcwd(), "./resources/image_file", image_file.filename.replace(" ", "-"))
     with open(file_path, 'wb+') as f:
         f.write(image_file.file.read())
 

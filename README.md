@@ -13,8 +13,11 @@ https://keras.io/examples/vision/image_captioning/
 HuggingFace
 https://huggingface.co/nlpconnect/vit-gpt2-image-captioning
 
+image understanding 
+https://huggingface.co/docs/transformers/main/model_doc/bridgetower
 
-### Method 1 - Image captioning based on COCO dataset
+
+### Method 1 - Image captioning using the COCO dataset
 
 ### Instructions
 
@@ -39,13 +42,13 @@ cd ..
 Download data from: http://cocodataset.org/#download
 
 * Under **Annotations**, download:
-  * **2014 Train/Val annotations [241MB]** (extract captions_train2014.json and captions_val2014.json, and place at locations cocoapi/annotations/captions_train2014.json and cocoapi/annotations/captions_val2014.json, respectively)  
-  * **2014 Testing Image info [1MB]** (extract image_info_test2014.json and place at location cocoapi/annotations/image_info_test2014.json)
+  * **2017 Train/Val annotations [241MB]** (extract captions_train2017.json and captions_val2017.json, and place at locations cocoapi/annotations/captions_train2017.json and cocoapi/annotations/captions_val2017.json, respectively)  
+  * **2017 Testing Image info [1MB]** (extract image_info_test2017.json and place at location cocoapi/annotations/image_info_test2017.json)
 
 * Under **Images**, download:
-  * **2014 Train images [83K/13GB]** (extract the train2014 folder and place at location cocoapi/images/train2014/)
-  * **2014 Val images [41K/6GB]** (extract the val2014 folder and place at location cocoapi/images/val2014/)
-  * **2014 Test images [41K/6GB]** (extract the test2014 folder and place at location cocoapi/images/test2014/)
+  * **2017 Train images [83K/13GB]** (extract the train2017 folder and place at location cocoapi/images/train2017/)
+  * **2017 Val images [41K/6GB]** (extract the val2017 folder and place at location cocoapi/images/val2017/)
+  * **2017 Test images [41K/6GB]** (extract the test2017 folder and place at location cocoapi/images/test2017/)
 
 
 
