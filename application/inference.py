@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from torchvision import transforms
 
 from utils.model import EncoderCNN, DecoderRNN
-from utils.data_loader import get_loader
+import pickle
 
 
 class InferenceOnSingleImage:
@@ -45,13 +45,13 @@ class InferenceOnSingleImage:
                                     transforms.ToTensor(),                           # convert the PIL Image to a tensor
                                     transforms.Normalize((0.485, 0.456, 0.406),      # normalize image for pre-trained model
                                                          (0.229, 0.224, 0.225))])
-        data_loader = get_loader(transform=transform_test, mode='test')
-        vocab_size = len(data_loader.dataset.vocab)
-        orig_image, image = next(iter(data_loader))
-        return data_loader, orig_image, image, vocab_size
+        with open('./models/vocab.pkl', 'rb') as f:
+            data_loader = pickle.load(f)
+        vocab_size = data_loader.idx2word.__len__()
+        return data_loader, vocab_size
 
     def clean_sentence(self, data_loader, output):
-        words = [data_loader.dataset.vocab.idx2word[i] for i in output][1:-1]
+        words = [data_loader.idx2word[i] for i in output][1:-1]
         sentence = ' '.join(words)
         return sentence
 
@@ -74,7 +74,7 @@ class InferenceOnSingleImage:
         orig_image = np.array(image_file)
         image = self.transform_image(image_file)
         image = image[None, :, :, :]
-        data_loader, _, _, vocab_size = self.load_data()
+        data_loader, vocab_size = self.load_data()
         encoder, decoder = self.load_enc_dec(vocab_size)
         sentence = self.get_prediction(data_loader, orig_image, image, encoder, decoder)
         return orig_image, sentence

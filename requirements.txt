@@ -16,8 +16,7 @@ seaborn
 matplotlib
 
 
-# pycocotools might need python3.XX-dev to be installed
-pycocotools==2.0.6
+
 
 # application layer
 uvicorn==0.20.0
