@@ -38,13 +38,6 @@ class InferenceOnSingleImage:
         return encoder, decoder
 
     def load_data(self):
-        transform_test = transforms.Compose([
-                                    transforms.Resize(256),                          # smaller edge of image resized to 256
-                                    transforms.RandomCrop(224),                      # get 224x224 crop from random location
-                                    transforms.RandomHorizontalFlip(),               # horizontally flip image with probability=0.5
-                                    transforms.ToTensor(),                           # convert the PIL Image to a tensor
-                                    transforms.Normalize((0.485, 0.456, 0.406),      # normalize image for pre-trained model
-                                                         (0.229, 0.224, 0.225))])
         with open('./models/idx2word.json') as f:
             idx2word = json.load(f)
         vocab_size = idx2word.__len__()
@@ -81,10 +74,10 @@ class InferenceOnSingleImage:
 
     def transform_image(self, image):
         transform_img = transforms.Compose([
-                                    transforms.Resize(256),                          # smaller edge of image resized to 256
-                                    transforms.RandomCrop(224),                      # get 224x224 crop from random location
-                                    transforms.RandomHorizontalFlip(),               # horizontally flip image with probability=0.5
-                                    transforms.ToTensor(),                           # convert the PIL Image to a tensor
-                                    transforms.Normalize((0.485, 0.456, 0.406),      # normalize image for pre-trained model
-                                                         (0.229, 0.224, 0.225))])
+                transforms.Resize(256),                          # smaller edge of image resized to 256
+                transforms.RandomCrop(224),                      # get 224x224 crop from random location
+                transforms.RandomHorizontalFlip(),               # horizontally flip image with probability=0.5
+                transforms.ToTensor(),                           # convert the PIL Image to a tensor
+                transforms.Normalize((0.485, 0.456, 0.406),      # normalize image for pre-trained model
+                                     (0.229, 0.224, 0.225))])
         return transform_img(image)

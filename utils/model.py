@@ -38,7 +38,7 @@ class DecoderRNN(nn.Module):
     def forward(self, features, captions):
 
         # batch_size = nn_input.size(0)
-        batch_size = features.size(0)
+        # batch_size = features.size(0)
 
         # embeds = self.embedding(features, captions) #nn_input)
         # captions = self.embedding(captions)
@@ -92,6 +92,4 @@ class DecoderRNN(nn.Module):
 
             # Get the embeddings for the next cycle.
             inputs = self.embedding(p)
-        
         return sentence
-        
