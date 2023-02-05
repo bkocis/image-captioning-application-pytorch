@@ -3,6 +3,8 @@ import uvicorn
 import logging
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile
+import io
+from starlette.responses import StreamingResponse
 
 from inference import InferenceOnSingleImage
 
@@ -33,8 +35,12 @@ async def image_file(image_file: UploadFile = File(...)):
         "predicted_caption": sentence
     }
 
+    image.thumbnail((200, 200))
+    buf = io.BytesIO()
+    image.save(buf, "JPEG")
+    buf.seek(0)
     logging.info(f"Prediction for {image_file} ...done!")
-    return output
+    return StreamingResponse(content=buf, media_type="image/jpeg", headers={"Content-Disposition": f"{output}"})
 
 if __name__ == "__main__":
     get_caption = InferenceOnSingleImage()
