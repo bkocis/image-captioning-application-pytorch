@@ -1,7 +1,15 @@
 ### General image captioning python application
 
+----
+#### Description
+
+In this repo implementations of image captioning methods have been dockerized and prepared for deployment. 
+The goal is to provide a simple and easy to use application for image captioning with a web interface.
+
+
 -----
 
+Overview of image captioning approaches 
 https://towardsdatascience.com/image-captioning-in-deep-learning-9cd23fb4d8d2
 
 TF
@@ -16,8 +24,9 @@ https://huggingface.co/nlpconnect/vit-gpt2-image-captioning
 image understanding 
 https://huggingface.co/docs/transformers/main/model_doc/bridgetower
 
+---
 
-### Method 1 - Image captioning using the COCO dataset
+### 1. Image captioning using the COCO dataset
 
 ### Instructions
 
@@ -49,6 +58,22 @@ Download data from: http://cocodataset.org/#download
   * **2017 Train images [83K/13GB]** (extract the train2017 folder and place at location cocoapi/images/train2017/)
   * **2017 Val images [41K/6GB]** (extract the val2017 folder and place at location cocoapi/images/val2017/)
   * **2017 Test images [41K/6GB]** (extract the test2017 folder and place at location cocoapi/images/test2017/)
+
+#### Training
+
+#### Deployment
+The deployment of the application is on q cloud service providing a bare-bone instance (such as DigitalOcean Droplet or in German provider Strato)
+
+- dockerize the application by running the build (see run_docker.sh)
+- save the image as a tar file for transfer to the server
+`sudo docker save -o PATH_TO_FILE.tar IMAGE_NAME`
+- deliver the tar image to the server 
+`rsync -avz PATH_TO_FILE.tar username@remote_server:directory`
+- load the image on the server
+`sudo docker load -i PATH_TO_FILE.tar`
+
+#### Setting up a reverse proxy with nginx
+
 
 ### Web-server API interface using FastAPI
 
