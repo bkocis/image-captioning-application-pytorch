@@ -6,7 +6,7 @@ from fastapi import FastAPI, File, UploadFile
 import io
 from starlette.responses import StreamingResponse
 
-from inference import InferenceOnSingleImage
+from application.inference import InferenceOnSingleImage
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
@@ -28,6 +28,7 @@ async def image_file(image_file: UploadFile = File(...)):
         f.write(image_file.file.read())
 
     image = Image.open(os.path.join(file_path)).convert('RGB')
+    get_caption = InferenceOnSingleImage()
     orig_image, sentence = get_caption.caption_sentence_from_upload(image)
 
     output = {
@@ -42,7 +43,7 @@ async def image_file(image_file: UploadFile = File(...)):
     logging.info(f"Prediction for {image_file} ...done!")
     return StreamingResponse(content=buf, media_type="image/jpeg", headers={"Content-Disposition": f"{output}"})
 
-if __name__ == "__main__":
-    get_caption = InferenceOnSingleImage()
-    logging.info("The service is starting...")
-    uvicorn.run(app, host="0.0.0.0", port=8081)
+# if __name__ == "__main__":
+#     get_caption = InferenceOnSingleImage()
+#     logging.info("The service is starting...")
+#     uvicorn.run(app, host="0.0.0.0", port=8081)
