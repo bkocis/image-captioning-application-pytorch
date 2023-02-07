@@ -38,7 +38,7 @@ make
 cd ..
 ```
 
-#### COCO data
+#### Dataset for training - COCO (Common Objects in Context)
 Download data from: http://cocodataset.org/#download
 
 * Under **Annotations**, download:
@@ -50,5 +50,6 @@ Download data from: http://cocodataset.org/#download
   * **2017 Val images [41K/6GB]** (extract the val2017 folder and place at location cocoapi/images/val2017/)
   * **2017 Test images [41K/6GB]** (extract the test2017 folder and place at location cocoapi/images/test2017/)
 
+### Web-server API interface using FastAPI
 
-
+<img src="assets/api_Screenshot.png">
