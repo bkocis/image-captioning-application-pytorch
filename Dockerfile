@@ -19,4 +19,4 @@ ENV PYTHONPATH /opt
 WORKDIR /opt
 EXPOSE 8081
 
-CMD ["gunicorn", "application.main:app", "-c", "application/config/gunicorn.conf.py", "-k", "uvicorn.workers.UvicornWorker"]
+CMD ["gunicorn", "application.main:app", "-c", "application/config/gunicorn_config.py", "-k", "uvicorn.workers.UvicornWorker"]
