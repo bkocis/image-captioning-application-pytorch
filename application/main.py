@@ -9,7 +9,7 @@ from application.inference import InferenceOnSingleImage
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
-app = FastAPI(docs_url="/",
+app = FastAPI(docs_url="/application",
               title="Image Captioning Application",
               description="This is a simple FastAPI application for image captioning",
               )
