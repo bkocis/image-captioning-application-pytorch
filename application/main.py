@@ -9,7 +9,7 @@ from application.inference import InferenceOnSingleImage
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
-endpoint_prefix = os.environ.get("ENDPOINT_PREFIX", "/application")
+endpoint_prefix = os.environ.get("ENDPOINT_PREFIX", "/image-captioning")
 
 app = FastAPI(docs_url=f"{endpoint_prefix}",
               title="Image Captioning Application",
