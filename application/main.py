@@ -12,6 +12,7 @@ logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 app = FastAPI(docs_url="/application",
               title="Image Captioning Application",
               description="This is a simple FastAPI application for image captioning",
+              openapi_url="/application/openapi.json"
               )
 
 
@@ -42,7 +43,7 @@ async def image_file(image_file: UploadFile = File(...)):
     return output
 
 
-@app.post("/upload_image/", tags=["Image Captioning"])
+@app.post("/application/upload_image/", tags=["Image Captioning"])
 async def image_file(image_file: UploadFile = File(...)):
     logging.info(image_file.file)
     try:
