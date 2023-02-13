@@ -9,14 +9,16 @@ from application.inference import InferenceOnSingleImage
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
-app = FastAPI(docs_url="/application",
+endpoint_prefix = os.environ.get("ENDPOINT_PREFIX", "/application")
+
+app = FastAPI(docs_url=f"{endpoint_prefix}",
               title="Image Captioning Application",
               description="This is a simple FastAPI application for image captioning",
-              openapi_url="/application/openapi.json"
+              openapi_url=f"{endpoint_prefix}/openapi.json"
               )
 
 
-@app.post("/caption_image/", tags=["Image Captioning"])
+@app.post(f"{endpoint_prefix}/caption_image/", tags=["Image Captioning"])
 async def image_file(image_file: UploadFile = File(...)):
     logging.info(image_file.file)
     try:
@@ -43,7 +45,7 @@ async def image_file(image_file: UploadFile = File(...)):
     return output
 
 
-@app.post("/application/upload_image/", tags=["Image Captioning"])
+@app.post(f"{endpoint_prefix}/upload_image/", tags=["Image Captioning"])
 async def image_file(image_file: UploadFile = File(...)):
     logging.info(image_file.file)
     try:
