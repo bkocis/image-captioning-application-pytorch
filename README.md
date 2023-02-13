@@ -67,10 +67,15 @@ The deployment of the application is on q cloud service providing a bare-bone in
 - dockerize the application by running the build (see run_docker.sh)
 - save the image as a tar file for transfer to the server
 `sudo docker save -o PATH_TO_FILE.tar IMAGE_NAME`
+
 - deliver the tar image to the server 
 `rsync -avz PATH_TO_FILE.tar username@remote_server:directory`
+
 - load the image on the server
 `sudo docker load -i PATH_TO_FILE.tar`
+
+- killing uvicorns (if running)
+(`sudo kill $(pgrep -P PID)`)
 
 #### Setting up a reverse proxy with nginx
 

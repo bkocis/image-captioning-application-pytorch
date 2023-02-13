@@ -61,8 +61,6 @@ class DecoderRNN(nn.Module):
         # output = output.view(batch_size, -1, self.hidden_size)
         # get last batch
         # output = output[:, -1]
-
-        # return out, hidden
         return output
 
     def sample(self, inputs, states=None, max_len=20):
