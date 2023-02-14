@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  image-captioning:
+    container_name: image-captioning
+    build:
+      context: .
+      dockerfile: Dockerfile
