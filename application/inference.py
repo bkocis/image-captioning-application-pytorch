@@ -57,9 +57,9 @@ class InferenceOnSingleImage:
 
         sentence = self.clean_sentence(idx2word, output)
 
-        plt.imshow(np.squeeze(orig_image))
-        plt.title(f'{sentence}')
-        plt.savefig(f"resources/Sample_image-{sentence}.png")
+        # plt.imshow(np.squeeze(orig_image))
+        # plt.title(f'{sentence}')
+        # plt.savefig(f"resources/Sample_image-{sentence}.png")
         return sentence
 
     def caption_sentence_from_upload(self, image_file):
