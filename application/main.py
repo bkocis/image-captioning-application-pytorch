@@ -1,10 +1,12 @@
 import os
+import io
 import logging
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile
-import io
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from starlette.responses import StreamingResponse
-
 from application.inference import InferenceOnSingleImage
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
@@ -16,10 +18,18 @@ app = FastAPI(docs_url=f"{endpoint_prefix}",
               description="This is a simple FastAPI application for image captioning",
               openapi_url=f"{endpoint_prefix}/openapi.json"
               )
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+templates = Jinja2Templates(directory="templates")
 
 
-@app.post(f"{endpoint_prefix}/caption_image/", tags=["Image Captioning"])
-async def image_file(image_file: UploadFile = File(...)):
+@app.post(f"{endpoint_prefix}/caption_image/", tags=["Image Captioning"])  # response_class=HTMLResponse)
+async def image_file_text(image_file: UploadFile = File(...)):
     logging.info(image_file.file)
     try:
         os.mkdir("./resources/image_file")
@@ -43,10 +53,11 @@ async def image_file(image_file: UploadFile = File(...)):
 
     logging.info(f"Prediction for {image_file} ...done!")
     return output
+    # return templates.TemplateResponse("page.html", {"request": image_file.filename, "data": sentence})
 
 
 @app.post(f"{endpoint_prefix}/upload_image/", tags=["Image Captioning"])
-async def image_file(image_file: UploadFile = File(...)):
+async def image_file_preview(image_file: UploadFile = File(...)):
     logging.info(image_file.file)
     try:
         os.mkdir("./resources/image_file")
