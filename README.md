@@ -1,5 +1,5 @@
 ### General image captioning python application
-
+[![Python application](https://github.com/bkocis/image-captioning-applications/actions/workflows/python-app.yml/badge.svg)](https://github.com/bkocis/image-captioning-applications/actions/workflows/python-app.yml)
 ----
 #### Description
 
