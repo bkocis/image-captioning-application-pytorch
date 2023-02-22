@@ -1,8 +1,9 @@
 /application/__pycache__/**
-/application/test/__pycache__/**
+/test/__pycache__/**
 /utils/__pycache__/**
 .idea/**
 /models/**
 /training_log.txt
 /resources/**
 /.pytest_cache/**
+/.pytest_cache/
