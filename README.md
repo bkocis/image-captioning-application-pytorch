@@ -3,33 +3,11 @@
 ----
 #### Description
 
-Image captioning is a task that involves generating a textual description of an image.
-It has been an active research area in deep learning and computer vision in recent years, 
-and several approaches have been proposed to solve this problem.
+This repo contains a general image captioning application using PyTorch and the COCO dataset. 
+The application is dockerized and can be deployed on a cloud service. 
+The application is also wrapped in a web-server API interface using FastAPI.
 
-This repo contains implementations of various state-of-the-art image captioning methods that have been dockerized 
-and prepared for easy deployment. 
-
-IN this case the goal is to provide a simple and user-friendly back-end application for image captioning
-that can be accessed through a web interface implemented in FasAPI.
-
----
-Some related references are listed below.
-
-- [Overview of image captioning approaches](https://towardsdatascience.com/image-captioning-in-deep-learning-9cd23fb4d8d2)
-
-- [TF tutorial on image captioning](https://www.tensorflow.org/tutorials/text/image_captioning)
-
-- [Implementation from the Keras docs](https://keras.io/examples/vision/image_captioning/)
-
-- [ViT-GPT2 implementation from HuggingFace](https://huggingface.co/nlpconnect/vit-gpt2-image-captioning)
-
-- [Image understanding using BridgeTower implementation from HuggingFace](https://huggingface.co/docs/transformers/main/model_doc/bridgetower) 
-
-
----
-
-### 1. Image captioning PyTorch implementation 
+### Image captioning PyTorch implementation 
 #### using the COCO dataset
 
 ### Instructions
