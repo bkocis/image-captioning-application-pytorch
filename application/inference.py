@@ -2,7 +2,6 @@ import os
 import torch
 import json
 import numpy as np
-import matplotlib.pyplot as plt
 from torchvision import transforms
 
 from utils.model import EncoderCNN, DecoderRNN

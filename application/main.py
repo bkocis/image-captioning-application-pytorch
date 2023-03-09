@@ -3,8 +3,8 @@ import io
 import logging
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+# from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.responses import StreamingResponse
 from application.inference import InferenceOnSingleImage

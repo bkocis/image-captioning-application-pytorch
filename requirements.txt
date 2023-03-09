@@ -1,11 +1,8 @@
 ### python3.10
 
-opencv-python==4.7.0.68
-torch==1.13.1+cpu
-torchvision==0.14.1+cpu
-pandas==1.5.3
-numpy==1.24.1
-nltk==3.8.1
+# testing
+flake8
+pytest
 
 pillow
 scipy
@@ -15,6 +12,12 @@ scikit-image
 seaborn
 matplotlib
 
+opencv-python==4.7.0.68
+torch==1.13.1+cpu
+torchvision==0.14.1+cpu
+pandas==1.5.3
+numpy==1.24.1
+nltk==3.8.1
 
 # application layer
 uvicorn==0.20.0
@@ -23,3 +26,5 @@ fastapi==0.89.1
 python-multipart
 jinja2==3.1.2
 httpx==0.23.0
+
+

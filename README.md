@@ -44,7 +44,7 @@ Download data from: http://cocodataset.org/#download
 #### Training
 
 #### Deployment
-The deployment of the application is on q cloud service providing a bare-bone instance (such as DigitalOcean Droplet or in German provider Strato)
+The deployment of the application can be on a cloud service providing a bare-bone instance (such as DigitalOcean Droplet)
 
 - dockerize the application by running the build (see run_docker.sh)
 - save the image as a tar file for transfer to the server
