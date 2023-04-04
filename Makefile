@@ -1,3 +1,6 @@
+port=8081
+app_name=image-captioning
+
 up:
 	docker-compose up
 
@@ -25,6 +28,10 @@ run_local:
 
 run_as_gunicorn:
 	gunicorn "application.main:app" -c application/config/gunicorn_config.py -k uvicorn.workers.UvicornWorker
+
+deploy:
+	docker build --tag=${app_name} .
+	docker run -dit -p ${port}:${port} ${app_name}
 
 git_push:
 	flake8
