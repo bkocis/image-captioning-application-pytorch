@@ -7,3 +7,4 @@
 /resources/**
 /.pytest_cache/**
 /.pytest_cache/
+application/config/__pycache__

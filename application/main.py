@@ -3,7 +3,7 @@ import io
 import logging
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile
-# from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 # from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.responses import StreamingResponse
@@ -18,13 +18,27 @@ app = FastAPI(docs_url=f"{endpoint_prefix}",
               description="This is a simple FastAPI application for image captioning",
               openapi_url=f"{endpoint_prefix}/openapi.json"
               )
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+
+origins = [
+    "http://localhost:8081/image-captioning",
+    "http://0.0.0.0:8081/image-captioning"
+    "http://localhost:8081",
+    "http://0.0.0.0:8081"
+    "0.0.0.0:8081/image-captioning",
+    "http://127.0.0.1:8081",
+    "http://127.0.0.1:8081/image-captioning",
+
+
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,        # Replace ["*"] with specific origins
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Specify allowed methods
+    allow_headers=["*"],
+    expose_headers=["Content-Disposition"],  # Expose headers you want client to access
+    max_age=3600,                # Cache preflight requests for 1 hour
+)
 templates = Jinja2Templates(directory="templates")
 
 
